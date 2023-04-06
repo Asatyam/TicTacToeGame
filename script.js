@@ -45,15 +45,49 @@ const gameBoard = (() => {
 })();
 
 const Game = (() => {
+  let count;
+  const board = [];
+
   const createLayout = () => {
     gameBoard.displayHeading();
     gameBoard.displayResult();
     gameBoard.displayContent();
     gameBoard.displayBoard();
   };
+  const initialiseBoard = () => {
+    count = 0;
+    for (let i = 0; i < 9; i++) {
+      board[i] = undefined;
+    }
+  };
+  const decidePlayerTurn = () => (count % 2 === 0 ? 'player1' : 'player2');
 
+  const userMove = (e) => {
+    const btnPos = e.target.className.split('').reverse()[0];
+    const playerTurn = decidePlayerTurn();
+    if (playerTurn === 'player1') {
+      board[btnPos] = 'X';
+    } else {
+      board[btnPos] = 'O';
+    }
+    e.target.textContent = board[btnPos];
+    count++;
+  };
+  const addEventListeners = () => {
+    const cells = document.querySelectorAll('.board>button');
+    cells.forEach((btn) => {
+      btn.addEventListener('click', userMove);
+    });
+  };
+
+  const startGame = () => {
+    initialiseBoard();
+    addEventListeners();
+  };
   return {
     createLayout,
+    startGame,
   };
 })();
 Game.createLayout();
+Game.startGame();
