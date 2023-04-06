@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable wrap-iife */
 /* eslint-disable no-plusplus */
 
@@ -62,6 +63,41 @@ const Game = (() => {
   };
   const decidePlayerTurn = () => (count % 2 === 0 ? 'player1' : 'player2');
 
+  const checkWin = (marker) => {
+    if (board[0] === marker && board[1] === marker && board[2] === marker) {
+      return true;
+    }
+    if (board[3] === marker && board[4] === marker && board[5] === marker) {
+      return true;
+    }
+    if (board[6] === marker && board[7] === marker && board[8] === marker) {
+      return true;
+    }
+    if (board[0] === marker && board[3] === marker && board[6] === marker) {
+      return true;
+    }
+    if (board[1] === marker && board[4] === marker && board[7] === marker) {
+      return true;
+    }
+    if (board[2] === marker && board[5] === marker && board[8] === marker) {
+      return true;
+    }
+    if (board[0] === marker && board[4] === marker && board[8] === marker) {
+      return true;
+    }
+    if (board[2] === marker && board[4] === marker && board[6] === marker) {
+      return true;
+    }
+    return false;
+  };
+  const checkDraw = () => {
+    const isDraw = board.includes(undefined);
+    if (isDraw) {
+      return false;
+    }
+    return true;
+  };
+
   const userMove = (e) => {
     const btnPos = e.target.className.split('').reverse()[0];
     const playerTurn = decidePlayerTurn();
@@ -71,7 +107,11 @@ const Game = (() => {
       board[btnPos] = 'O';
     }
     e.target.textContent = board[btnPos];
+    if (count % 2 === 0) console.log(checkWin('X'));
+    else console.log(checkWin('O'));
     count++;
+    console.log(board);
+    console.log(checkDraw());
   };
   const addEventListeners = () => {
     const cells = document.querySelectorAll('.board>button');
@@ -84,6 +124,7 @@ const Game = (() => {
     initialiseBoard();
     addEventListeners();
   };
+
   return {
     createLayout,
     startGame,
