@@ -12,11 +12,22 @@ const gameBoard = (() => {
     headingDiv.appendChild(headingPara);
     main.appendChild(headingDiv);
   }
-  function displayResult() {
+  function displayResult(marker, winner) {
+    const turnPara = document.querySelector('.result>p');
+    if (turnPara) {
+      if (!marker) {
+        turnPara.textContent = 'The game ends in a draw';
+      } else if (winner) {
+        turnPara.textContent = `Player ${marker} is the winner`;
+      } else {
+        turnPara.textContent = `Player ${marker}'s Turn`;
+      }
+      return;
+    }
     const resultDiv = document.createElement('div');
     resultDiv.setAttribute('class', 'result');
     const resultPara = document.createElement('p');
-    resultPara.textContent = 'Player X turn';
+    resultPara.textContent = "Player X's turn";
     resultDiv.appendChild(resultPara);
     main.appendChild(resultDiv);
   }
@@ -36,18 +47,27 @@ const gameBoard = (() => {
     boardDiv.setAttribute('class', 'board');
     content.appendChild(boardDiv);
   }
-
+  function displayRestartButton() {
+    const content = document.querySelector('.content');
+    const restartBtn = document.createElement('button');
+    restartBtn.setAttribute('class', 'restart');
+    restartBtn.textContent = 'Restart Game';
+    content.appendChild(restartBtn);
+  }
   return {
     displayHeading,
     displayContent,
     displayBoard,
     displayResult,
+    displayRestartButton,
   };
 })();
 
 const Game = (() => {
   let count;
   const board = [];
+  let winner = '';
+  let isDraw = '';
 
   const createLayout = () => {
     gameBoard.displayHeading();
@@ -91,7 +111,7 @@ const Game = (() => {
     return false;
   };
   const checkDraw = () => {
-    const isDraw = board.includes(undefined);
+    isDraw = board.includes(undefined);
     if (isDraw) {
       return false;
     }
@@ -99,6 +119,7 @@ const Game = (() => {
   };
 
   const userMove = (e) => {
+    if (winner || isDraw) return;
     const btnPos = e.target.className.split('').reverse()[0];
     const playerTurn = decidePlayerTurn();
     if (playerTurn === 'player1') {
@@ -107,28 +128,67 @@ const Game = (() => {
       board[btnPos] = 'O';
     }
     e.target.textContent = board[btnPos];
-    if (count % 2 === 0) console.log(checkWin('X'));
-    else console.log(checkWin('O'));
+    if (count % 2 === 0) {
+      winner = checkWin('X');
+      if (winner) {
+        gameBoard.displayResult('X', 1, 0);
+      }
+    } else {
+      winner = checkWin('O');
+      if (winner) {
+        gameBoard.displayResult('O', 1, 0);
+      }
+    }
+
     count++;
-    console.log(board);
-    console.log(checkDraw());
+    if (!winner) {
+      isDraw = checkDraw();
+      if (isDraw) {
+        gameBoard.displayResult('', 0, 1);
+      }
+    }
+    if (!winner && !isDraw) {
+      const marker = count % 2 === 0 ? 'X' : 'O';
+      gameBoard.displayResult(marker, 0);
+    }
   };
   const addEventListeners = () => {
     const cells = document.querySelectorAll('.board>button');
     cells.forEach((btn) => {
-      btn.addEventListener('click', userMove);
+      btn.addEventListener('click', userMove, { once: true });
     });
   };
 
   const startGame = () => {
     initialiseBoard();
+
     addEventListeners();
   };
-
+  const resetGame = () => {
+    initialiseBoard();
+    count = 0;
+    winner = '';
+    isDraw = '';
+    const cells = document.querySelectorAll('.board>button');
+    cells.forEach((btn) => {
+      // eslint-disable-next-line no-param-reassign
+      btn.textContent = '';
+      btn.removeEventListener('click', userMove);
+    });
+    gameBoard.displayResult('X', 0);
+    addEventListeners();
+  };
+  const restartGame = () => {
+    gameBoard.displayRestartButton();
+    const restartBtn = document.querySelector('.restart');
+    restartBtn.addEventListener('click', resetGame);
+  };
   return {
     createLayout,
     startGame,
+    restartGame,
   };
 })();
 Game.createLayout();
 Game.startGame();
+Game.restartGame();
