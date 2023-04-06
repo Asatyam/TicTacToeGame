@@ -17,9 +17,12 @@ const gameBoard = (() => {
     if (turnPara) {
       if (!marker) {
         turnPara.textContent = 'The game ends in a draw';
+        document.querySelector('.result').classList.add('draw');
       } else if (winner) {
         turnPara.textContent = `Player ${marker} is the winner`;
+        document.querySelector('.result').classList.add('winner');
       } else {
+        document.querySelector('.result').classList.remove('winner', 'draw');
         turnPara.textContent = `Player ${marker}'s Turn`;
       }
       return;
@@ -66,8 +69,8 @@ const gameBoard = (() => {
 const Game = (() => {
   let count;
   const board = [];
-  let winner = '';
-  let isDraw = '';
+  let winner;
+  let isDraw;
 
   const createLayout = () => {
     gameBoard.displayHeading();
@@ -77,6 +80,8 @@ const Game = (() => {
   };
   const initialiseBoard = () => {
     count = 0;
+    winner = '';
+    isDraw = '';
     for (let i = 0; i < 9; i++) {
       board[i] = undefined;
     }
@@ -166,9 +171,6 @@ const Game = (() => {
   };
   const resetGame = () => {
     initialiseBoard();
-    count = 0;
-    winner = '';
-    isDraw = '';
     const cells = document.querySelectorAll('.board>button');
     cells.forEach((btn) => {
       // eslint-disable-next-line no-param-reassign

@@ -31,6 +31,7 @@
 .content{
     background-color: blueviolet;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -44,4 +45,28 @@
 }
 .board>button{
     font-size:5rem;
+}
+.board>button:hover{
+    background-color: antiquewhite;
+}
+
+.restart{
+    margin-top: 50px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: aquamarine;
+    font-size:1.3rem;
+    transition: 0.1s;
+}
+.restart:hover{
+    background-color: coral;
+    color:white;
+}
+.winner{
+    background-color: green;
+    color:white;
+}
+.draw{
+    background-color: yellow;
 }
