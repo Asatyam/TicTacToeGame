@@ -3,6 +3,7 @@ const main = document.querySelector('.main');
 function createHeading() {
   const headingDiv = document.createElement('div');
   const headingPara = document.createElement('p');
+  headingDiv.setAttribute('class', 'heading');
   headingPara.textContent = 'Tic-Tac-Toe';
   headingDiv.appendChild(headingPara);
   main.appendChild(headingDiv);
@@ -18,5 +19,14 @@ function createBoard() {
   boardDiv.setAttribute('class', 'board');
   main.appendChild(boardDiv);
 }
+function displayResult() {
+  const resultDiv = document.createElement('div');
+  resultDiv.setAttribute('class', 'result');
+  const resultPara = document.createElement('p');
+  resultPara.textContent = 'Player X turn';
+  resultDiv.appendChild(resultPara);
+  main.appendChild(resultDiv);
+}
 createHeading();
+displayResult();
 createBoard();
