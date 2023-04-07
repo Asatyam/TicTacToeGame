@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Stick+No+Bills:wght@800&display=swap');
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Stick No Bills', sans-serif;
+    
 }
 
 .main{
@@ -13,23 +17,25 @@
 }
 
 .heading,.result{
-    background-color: green;
+    background-color:#312e81;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
 }
 .heading>p{
-    font-size: 2.5rem;
+    font-size: 3rem;
 }
 .result{
-    background-color:bisque;
+    background-color:#1e40af;
 }
 .result>p
 {
+    font-family: 'Anton', sans-serif;
     font-size: 2rem;
 }
 .content{
-    background-color: blueviolet;
+    background-color:#c4b5fd;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,17 +44,17 @@
 .board{
     height: 400px;
     width:400px;
-
     display: grid;
     gap:15px;
     grid-template-columns: repeat(3,1fr);
     grid-auto-rows: 1fr;
 }
 .board>button{
+    font-family: 'Lilita One', cursive;
     font-size:5rem;
 }
 .board>button:hover{
-    background-color: antiquewhite;
+    background-color:#fecdd3;
 }
 
 .restart{
@@ -65,9 +71,9 @@
     color:white;
 }
 .winner{
-    background-color: green;
+    background-color:#22c55e;
     color:white;
 }
 .draw{
-    background-color: yellow;
+    background-color: #22d3ee;
 }
